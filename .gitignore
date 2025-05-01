@@ -52,3 +52,5 @@ replay_pid*
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+src/main/java/projeto/faculdade/util/DbConnection.java
