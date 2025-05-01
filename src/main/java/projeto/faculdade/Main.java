@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import projeto.faculdade.dao.AlunoDAO;
-import projeto.faculdade.dto.RegisterAlunoDTO;
+import projeto.faculdade.model.Aluno;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -45,6 +45,6 @@ public class Main {
         String data = sc.next();
         LocalDate dataNascimento = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-        AlunoDAO.registrar(new RegisterAlunoDTO(nome, matricula, dataNascimento));
+        AlunoDAO.registrar(new Aluno(0, nome, matricula, dataNascimento));
     }
 }
