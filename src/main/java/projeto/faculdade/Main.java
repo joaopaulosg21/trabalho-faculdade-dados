@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import projeto.faculdade.dao.AlunoDAO;
+import projeto.faculdade.dao.EmprestimoDAO;
 import projeto.faculdade.dao.LivroDAO;
 import projeto.faculdade.model.Aluno;
 import projeto.faculdade.model.Livro;
@@ -34,6 +35,8 @@ public class Main {
             case 2 -> {
                 cadastrarLivro(sc);
                 break;
+            }case 3 -> {
+                registrarEmprestimo(sc);
             }
         }
     }
@@ -69,4 +72,16 @@ public class Main {
         LivroDAO.registrar(new Livro(0, titulo, autor, anoPublicacao, quantidade));
         sc.close();
     }
+
+    private static void registrarEmprestimo(Scanner sc) {
+        System.out.print("Digite a matricula do aluno: ");
+        String matricula = sc.nextLine();
+        AlunoDAO.verificaMatricula(matricula);
+
+        System.out.print("Digite o titulo do livro: ");
+        String tituloLivro = sc.nextLine();
+
+        EmprestimoDAO.registrarEmprestimo(matricula, tituloLivro);
+    }
+
 }

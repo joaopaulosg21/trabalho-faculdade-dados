@@ -3,8 +3,10 @@ package projeto.faculdade.dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import projeto.faculdade.exceptions.ValidationException;
 import projeto.faculdade.model.Aluno;
 import projeto.faculdade.util.DbConnection;
 
@@ -20,10 +22,43 @@ public class AlunoDAO {
             preparedStatement.setDate(3, Date.valueOf(aluno.getDataNascimento()));
 
             preparedStatement.executeUpdate();
-            
+
             System.out.println("Aluno registrado com sucesso!!");
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }
+    }
+
+    public static void verificaMatricula(String matricula) {
+        String verificaMatricula = "SELECT * FROM alunos WHERE matricula = ?";
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement matriculaStmt = con.prepareStatement(verificaMatricula);
+            matriculaStmt.setString(1, matricula);
+
+            ResultSet rs = matriculaStmt.executeQuery();
+            if (!rs.next()) {
+                throw new ValidationException("Matricula invalida");
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+    }
+
+    public static int getAlunoId(String matricula) {
+        String idAlunoQuery = "SELECT id_aluno FROM alunos WHERE matricula = ?";
+        verificaMatricula(matricula);
+        int idAluno = -1;
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement idAlunoStmt = con.prepareStatement(idAlunoQuery);
+            idAlunoStmt.setString(1, matricula);
+
+            ResultSet rs = idAlunoStmt.executeQuery();
+            while (rs.next()) {
+                idAluno = rs.getInt("id_aluno");
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+        return idAluno;
     }
 }
