@@ -2,8 +2,10 @@ package projeto.faculdade.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import projeto.faculdade.exceptions.ValidationException;
 import projeto.faculdade.model.Livro;
 import projeto.faculdade.util.DbConnection;
 
@@ -24,5 +26,38 @@ public class LivroDAO {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }
+    }
+    
+    public static void verificaTitulo(String titulo) {
+        String verificaTitulo = "SELECT * FROM livros WHERE titulo = ?";
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement tituloStmt = con.prepareStatement(verificaTitulo);
+            tituloStmt.setString(1, titulo);
+
+            ResultSet rs = tituloStmt.executeQuery();
+            if (!rs.next()) {
+                throw new ValidationException("Titulo invalido, digite um titulo registrado no sistema!");
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+    }
+
+    public static int getLivroId(String titulo) {
+        String idLivroQuery =  "SELECT id_livro FROM livros WHERE titulo = ?";
+        verificaTitulo(titulo);
+        int idLivro = -1;
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement idLivroStmt = con.prepareStatement(idLivroQuery);
+            idLivroStmt.setString(1, titulo);
+
+            ResultSet rs = idLivroStmt.executeQuery();
+            while (rs.next()) {
+                idLivro = rs.getInt("id_livro");
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+        return idLivro;
     }
 }
