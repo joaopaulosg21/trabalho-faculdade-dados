@@ -37,7 +37,7 @@ public class AlunoDAO {
 
             ResultSet rs = matriculaStmt.executeQuery();
             if (!rs.next()) {
-                throw new ValidationException("Matricula invalida");
+                throw new ValidationException("Matricula invalida, digite uma matricula de um aluno registrado no sistema");
             }
         } catch (SQLException exc) {
             throw new ValidationException(exc.getMessage());
