@@ -1,59 +1,76 @@
 package projeto.faculdade;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import projeto.faculdade.crud.CrudAlunos;
 import projeto.faculdade.dao.AlunoDAO;
 import projeto.faculdade.dao.EmprestimoDAO;
 import projeto.faculdade.dao.LivroDAO;
-import projeto.faculdade.model.Aluno;
 import projeto.faculdade.model.Livro;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        menuInicial();
+    }
+
+    private static void menuInicial() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("""
+        String menu = """
 
                     SISTEMA DE BIBLIOTECA
 
                 Escolha uma opção:
-                1 - Cadastrar aluno
-                2 - Cadastrar livro
+                1 - Menu de alunos
+                2 - Menu de livros
                 3 - Emprestimo de livro
                 4 - Devolução de livro
                 5 - Relatorio
-                """);
+                """;
+        System.out.println(menu);
         System.out.print("Opção: ");
         int option = sc.nextInt();
         sc.nextLine();
         switch (option) {
             case 1 -> {
-                cadastrarAluno(sc);
+                menuDeAlunos(sc);
                 break;
             }
             case 2 -> {
                 cadastrarLivro(sc);
                 break;
-            }case 3 -> {
+            }
+            case 3 -> {
                 registrarEmprestimo(sc);
+            }
+            case 0 -> {
+
             }
         }
     }
 
-    private static void cadastrarAluno(Scanner sc) {
-        System.out.print("Digite o nome do aluno: ");
-        String nome = sc.nextLine();
+    private static void menuDeAlunos(Scanner sc) {
+        System.out.println("""
+                    MENU DE ALUNOS
+                Escolha uma opção:
+                1 - Cadastrar aluno
+                2 - Buscar aluno
+                3 - Editar aluno
+                4 - Deletar aluno
+                0 - Voltar
+                """);
+        System.out.print("Opção: ");
+        int option = sc.nextInt();
+        sc.nextLine();
 
-        System.out.print("Digite a matricula do aluno: ");
-        String matricula = sc.nextLine();
-
-        System.out.print("Digite a data de nascimento do aluno (no formato: dd/mm/yyyy): ");
-        String data = sc.nextLine();
-        LocalDate dataNascimento = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-        AlunoDAO.registrar(new Aluno(0, nome, matricula, dataNascimento));
-        sc.close();
+        switch (option) {
+            case 1 -> {
+                CrudAlunos.cadastrarAluno(sc);
+                break;
+            }
+            case 0 -> {
+                menuInicial();
+            }
+        }
     }
 
     private static void cadastrarLivro(Scanner sc) {
