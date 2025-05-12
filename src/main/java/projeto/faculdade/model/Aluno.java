@@ -51,4 +51,9 @@ public class Aluno {
         this.dataNascimento = dataNascimento;
     }
 
+    @Override
+    public String toString() {
+        return "{ id=" + id + ", nome=" + nome + ", matricula=" + matricula + ", dataNascimento=" + dataNascimento
+                + " }";
+    }
 }

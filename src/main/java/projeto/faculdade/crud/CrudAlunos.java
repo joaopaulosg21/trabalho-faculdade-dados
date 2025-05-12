@@ -22,4 +22,10 @@ public class CrudAlunos {
         AlunoDAO.registrar(new Aluno(0, nome, matricula, dataNascimento));
         sc.close();
     }
+
+    public static void buscarAluno(Scanner sc) {
+        System.out.print("Digite a matricula do aluno: ");
+        String matricula = sc.nextLine();
+        AlunoDAO.buscar(matricula);
+    }
 }

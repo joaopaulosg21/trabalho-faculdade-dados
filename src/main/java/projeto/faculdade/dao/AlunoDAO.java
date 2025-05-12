@@ -37,7 +37,8 @@ public class AlunoDAO {
 
             ResultSet rs = matriculaStmt.executeQuery();
             if (!rs.next()) {
-                throw new ValidationException("Matricula invalida, digite uma matricula de um aluno registrado no sistema");
+                throw new ValidationException(
+                        "Matricula invalida, digite uma matricula de um aluno registrado no sistema");
             }
         } catch (SQLException exc) {
             throw new ValidationException(exc.getMessage());
@@ -60,5 +61,24 @@ public class AlunoDAO {
             throw new ValidationException(exc.getMessage());
         }
         return idAluno;
+    }
+
+    public static void buscar(String matricula) {
+        String queryBuscarAluno = "SELECT * FROM alunos WHERE matricula = ?";
+        verificaMatricula(matricula);
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement matriculaStmt = con.prepareStatement(queryBuscarAluno);
+            matriculaStmt.setString(1, matricula);
+
+            ResultSet rs = matriculaStmt.executeQuery();
+            while (rs.next()) {
+                Aluno aluno = new Aluno(rs.getInt("id_aluno"), rs.getString("nome_aluno"),
+                rs.getString("matricula"),rs.getDate("data_nascimento").toLocalDate());
+
+                System.out.println(aluno);
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
     }
 }

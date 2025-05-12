@@ -67,6 +67,9 @@ public class Main {
                 CrudAlunos.cadastrarAluno(sc);
                 break;
             }
+            case 2 -> {
+                CrudAlunos.buscarAluno(sc);
+            }
             case 0 -> {
                 menuInicial();
             }
