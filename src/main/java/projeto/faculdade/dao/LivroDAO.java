@@ -13,7 +13,7 @@ public class LivroDAO {
     private static final String INSERT = "INSERT INTO livros(titulo,autor,ano_publicacao,quantidade_estoque) VALUES (?,?,?,?)";
 
     public static void registrar(Livro livro) {
-        try(Connection con = DbConnection.getConnection()) {
+        try (Connection con = DbConnection.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(INSERT);
             preparedStatement.setString(1, livro.getTitulo());
             preparedStatement.setString(2, livro.getAutor());
@@ -21,13 +21,13 @@ public class LivroDAO {
             preparedStatement.setInt(4, livro.getQuantidadeEstoque());
 
             preparedStatement.executeUpdate();
-            
+
             System.out.println("Livro registrado com sucesso!!");
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }
     }
-    
+
     public static void verificaTitulo(String titulo) {
         String verificaTitulo = "SELECT * FROM livros WHERE titulo = ?";
         try (Connection con = DbConnection.getConnection()) {
@@ -44,7 +44,7 @@ public class LivroDAO {
     }
 
     public static int getLivroId(String titulo) {
-        String idLivroQuery =  "SELECT id_livro FROM livros WHERE titulo = ?";
+        String idLivroQuery = "SELECT id_livro FROM livros WHERE titulo = ?";
         verificaTitulo(titulo);
         int idLivro = -1;
         try (Connection con = DbConnection.getConnection()) {
@@ -59,5 +59,27 @@ public class LivroDAO {
             throw new ValidationException(exc.getMessage());
         }
         return idLivro;
+    }
+
+    public static Livro buscar(String titulo) {
+        String queryBuscarLivro = "SELECT * FROM livros WHERE titulo = ?";
+        verificaTitulo(titulo);
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement tituloStmt = con.prepareStatement(queryBuscarLivro);
+            tituloStmt.setString(1, titulo);
+
+            ResultSet rs = tituloStmt.executeQuery();
+            while (rs.next()) {
+                Livro livro = new Livro(rs.getInt("id_livro"), rs.getString("titulo"), rs.getString("autor"),
+                        rs.getInt("ano_publicacao"), rs.getInt("quantidade_estoque"));
+
+                System.out.println(livro);
+                return livro;
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+
+        return null;
     }
 }

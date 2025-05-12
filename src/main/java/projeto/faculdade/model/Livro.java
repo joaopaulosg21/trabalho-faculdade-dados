@@ -60,5 +60,11 @@ public class Livro {
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
+    @Override
+    public String toString() {
+        return "{ id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", anoPublicacao=" + anoPublicacao
+                + ", quantidadeEstoque=" + quantidadeEstoque + " }";
+    }
+
     
 }

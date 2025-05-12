@@ -3,10 +3,9 @@ package projeto.faculdade;
 import java.util.Scanner;
 
 import projeto.faculdade.crud.CrudAlunos;
+import projeto.faculdade.crud.CrudLivros;
 import projeto.faculdade.dao.AlunoDAO;
 import projeto.faculdade.dao.EmprestimoDAO;
-import projeto.faculdade.dao.LivroDAO;
-import projeto.faculdade.model.Livro;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -36,7 +35,7 @@ public class Main {
                 break;
             }
             case 2 -> {
-                cadastrarLivro(sc);
+                menuDeLivros(sc);
                 break;
             }
             case 3 -> {
@@ -85,21 +84,33 @@ public class Main {
         }
     }
 
-    private static void cadastrarLivro(Scanner sc) {
-        System.out.print("Digite o titulo do livro: ");
-        String titulo = sc.nextLine();
+    private static void menuDeLivros(Scanner sc) {
+        System.out.println("""
+                    MENU DE LIVROS
+                Escolha uma opção:
+                1 - Cadastrar livro
+                2 - Buscar livro
+                3 - Editar livro
+                4 - Deletar livro
+                0 - Voltar
+                """);
+        System.out.print("Opção: ");
+        int option = sc.nextInt();
+        sc.nextLine();
 
-        System.out.print("Digite o autor do livro: ");
-        String autor = sc.nextLine();
-
-        System.out.print("Digite o ano de publicação do livro: ");
-        int anoPublicacao = sc.nextInt();
-
-        System.out.print("Digite a quantidade de estoque: ");
-        int quantidade = sc.nextInt();
-
-        LivroDAO.registrar(new Livro(0, titulo, autor, anoPublicacao, quantidade));
-        sc.close();
+        switch (option) {
+            case 1 -> {
+                CrudLivros.cadastrarLivro(sc);
+                break;
+            }
+            case 2 -> {
+                CrudLivros.buscarLivro(sc);
+                break;
+            }
+            case 0 -> {
+                menuInicial();
+            }
+        }
     }
 
     private static void registrarEmprestimo(Scanner sc) {
