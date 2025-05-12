@@ -28,4 +28,34 @@ public class CrudAlunos {
         String matricula = sc.nextLine();
         AlunoDAO.buscar(matricula);
     }
+
+    public static void atualizarAluno(Scanner sc) {
+        System.out.print("Digite a matricula do aluno: ");
+        String matricula = sc.nextLine();
+
+        Aluno aluno = AlunoDAO.buscar(matricula);
+
+        System.out.println("CASO NÃO QUEIRA ALTERAR O DADO BASTA DEIXAR VAZIO!!!");
+        System.out.print("Nome: ");
+        String nome = sc.nextLine();
+
+        if (nome.isBlank() || nome.isEmpty()) {
+            nome = aluno.getNome();
+        }
+
+        System.out.print("Data de Nascimento: ");
+        String data = sc.nextLine();
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if (data.isBlank() || data.isEmpty()) {
+            data = aluno.getDataNascimento().format(formatter);
+        }
+        LocalDate dataNascimento = LocalDate.parse(data,formatter);
+
+        aluno.setNome(nome);
+        aluno.setDataNascimento(dataNascimento);
+
+        AlunoDAO.atualizar(aluno);
+
+    }
 }

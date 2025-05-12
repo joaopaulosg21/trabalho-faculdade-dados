@@ -12,11 +12,10 @@ import projeto.faculdade.util.DbConnection;
 
 public class AlunoDAO {
 
-    private static final String INSERT = "INSERT INTO alunos(nome_aluno,matricula,data_nascimento) VALUES (?,?,?)";
-
     public static void registrar(Aluno aluno) {
+        String insertAluno = "INSERT INTO alunos(nome_aluno,matricula,data_nascimento) VALUES (?,?,?)";
         try (Connection con = DbConnection.getConnection()) {
-            PreparedStatement preparedStatement = con.prepareStatement(INSERT);
+            PreparedStatement preparedStatement = con.prepareStatement(insertAluno);
             preparedStatement.setString(1, aluno.getNome());
             preparedStatement.setString(2, aluno.getMatricula());
             preparedStatement.setDate(3, Date.valueOf(aluno.getDataNascimento()));
@@ -63,7 +62,7 @@ public class AlunoDAO {
         return idAluno;
     }
 
-    public static void buscar(String matricula) {
+    public static Aluno buscar(String matricula) {
         String queryBuscarAluno = "SELECT * FROM alunos WHERE matricula = ?";
         verificaMatricula(matricula);
         try (Connection con = DbConnection.getConnection()) {
@@ -73,12 +72,31 @@ public class AlunoDAO {
             ResultSet rs = matriculaStmt.executeQuery();
             while (rs.next()) {
                 Aluno aluno = new Aluno(rs.getInt("id_aluno"), rs.getString("nome_aluno"),
-                rs.getString("matricula"),rs.getDate("data_nascimento").toLocalDate());
+                        rs.getString("matricula"), rs.getDate("data_nascimento").toLocalDate());
 
                 System.out.println(aluno);
+                return aluno;
             }
         } catch (SQLException exc) {
             throw new ValidationException(exc.getMessage());
+        }
+
+        return null;
+    }
+
+    public static void atualizar(Aluno aluno) {
+        String atualizarAluno = "UPDATE alunos SET nome_aluno = ?, data_nascimento=?";
+
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(atualizarAluno);
+            preparedStatement.setString(1, aluno.getNome());
+            preparedStatement.setDate(2, Date.valueOf(aluno.getDataNascimento()));
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Aluno atualizado com sucesso!!");
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
         }
     }
 }

@@ -69,6 +69,11 @@ public class Main {
             }
             case 2 -> {
                 CrudAlunos.buscarAluno(sc);
+                break;
+            }
+            case 3 -> {
+                CrudAlunos.atualizarAluno(sc);
+                break;
             }
             case 0 -> {
                 menuInicial();
