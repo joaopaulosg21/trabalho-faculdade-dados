@@ -72,4 +72,12 @@ public class CrudLivros {
 
         LivroDAO.atualizar(livro);
     }
+
+    public static void deletarLivro(Scanner sc) {
+        System.out.print("Digite o titulo do livro: ");
+        String titulo = sc.nextLine();
+
+        Livro livro = LivroDAO.buscar(titulo);
+        LivroDAO.deletar(livro);
+    }
 }

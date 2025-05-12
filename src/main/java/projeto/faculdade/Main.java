@@ -111,6 +111,10 @@ public class Main {
                 CrudLivros.atualizarLivro(sc);
                 break;
             }
+            case 4 -> {
+                CrudLivros.deletarLivro(sc);
+                break;
+            }
             case 0 -> {
                 menuInicial();
             }

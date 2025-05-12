@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import projeto.faculdade.exceptions.ValidationException;
 import projeto.faculdade.model.Livro;
@@ -90,13 +91,30 @@ public class LivroDAO {
             PreparedStatement preparedStatement = con.prepareStatement(atualizarLivro);
             preparedStatement.setString(1, livro.getTitulo());
             preparedStatement.setString(2, livro.getAutor());
-            preparedStatement.setInt(3,livro.getAnoPublicacao());
+            preparedStatement.setInt(3, livro.getAnoPublicacao());
             preparedStatement.setInt(4, livro.getQuantidadeEstoque());
-            preparedStatement.setInt(5,livro.getId());
+            preparedStatement.setInt(5, livro.getId());
 
             preparedStatement.executeUpdate();
 
             System.out.println("Livro atualizado com sucesso!!");
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+
+    public static void deletar(Livro livro) {
+        String deletarLivro = "DELETE FROM livros WHERE id_livro = ?";
+
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(deletarLivro);
+            preparedStatement.setInt(1, livro.getId());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Livro deletado com sucesso!!");
+        } catch (SQLIntegrityConstraintViolationException exc) {
+            System.out.println("Livro possui emprestimos de alunos associados a ele, não é possivel a exclusão!!!");
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }
