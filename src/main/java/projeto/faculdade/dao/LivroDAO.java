@@ -82,4 +82,23 @@ public class LivroDAO {
 
         return null;
     }
+
+    public static void atualizar(Livro livro) {
+        String atualizarLivro = "UPDATE livros SET titulo = ?, autor=?, ano_publicacao=?, quantidade_estoque=? WHERE id_livro = ?";
+
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(atualizarLivro);
+            preparedStatement.setString(1, livro.getTitulo());
+            preparedStatement.setString(2, livro.getAutor());
+            preparedStatement.setInt(3,livro.getAnoPublicacao());
+            preparedStatement.setInt(4, livro.getQuantidadeEstoque());
+            preparedStatement.setInt(5,livro.getId());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Livro atualizado com sucesso!!");
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
 }

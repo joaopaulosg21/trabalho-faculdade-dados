@@ -107,6 +107,10 @@ public class Main {
                 CrudLivros.buscarLivro(sc);
                 break;
             }
+            case 3 -> {
+                CrudLivros.atualizarLivro(sc);
+                break;
+            }
             case 0 -> {
                 menuInicial();
             }

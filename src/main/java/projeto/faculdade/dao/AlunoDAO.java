@@ -86,13 +86,13 @@ public class AlunoDAO {
     }
 
     public static void atualizar(Aluno aluno) {
-        String atualizarAluno = "UPDATE alunos SET nome_aluno = ?, data_nascimento=?";
+        String atualizarAluno = "UPDATE alunos SET nome_aluno = ?, data_nascimento=? WHERE id_aluno = ?";
 
         try (Connection con = DbConnection.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(atualizarAluno);
             preparedStatement.setString(1, aluno.getNome());
             preparedStatement.setDate(2, Date.valueOf(aluno.getDataNascimento()));
-
+            preparedStatement.setInt(3,aluno.getId());
             preparedStatement.executeUpdate();
 
             System.out.println("Aluno atualizado com sucesso!!");
