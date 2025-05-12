@@ -45,17 +45,25 @@ public class CrudAlunos {
 
         System.out.print("Data de Nascimento: ");
         String data = sc.nextLine();
-        
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         if (data.isBlank() || data.isEmpty()) {
             data = aluno.getDataNascimento().format(formatter);
         }
-        LocalDate dataNascimento = LocalDate.parse(data,formatter);
+        LocalDate dataNascimento = LocalDate.parse(data, formatter);
 
         aluno.setNome(nome);
         aluno.setDataNascimento(dataNascimento);
 
         AlunoDAO.atualizar(aluno);
 
+    }
+
+    public static void deletarAluno(Scanner sc) {
+        System.out.print("Digite a matricula do aluno para excluir : ");
+        String matricula = sc.nextLine();
+        Aluno aluno = AlunoDAO.buscar(matricula);
+
+        AlunoDAO.deletar(aluno);
     }
 }

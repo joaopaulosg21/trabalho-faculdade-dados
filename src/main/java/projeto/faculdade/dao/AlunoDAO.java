@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import projeto.faculdade.exceptions.ValidationException;
 import projeto.faculdade.model.Aluno;
@@ -95,6 +96,23 @@ public class AlunoDAO {
             preparedStatement.executeUpdate();
 
             System.out.println("Aluno atualizado com sucesso!!");
+        } catch (SQLException exc) {
+            System.out.println(exc.getMessage());
+        }
+    }
+
+    public static void deletar(Aluno aluno) {
+        String deletarAluno = "DELETE FROM alunos WHERE id_aluno = ?";
+
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(deletarAluno);
+            preparedStatement.setInt(1, aluno.getId());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Aluno deletado com sucesso!!");
+        } catch (SQLIntegrityConstraintViolationException exc) {
+            System.out.println("Aluno possui emprestimos de livros associados a ele, não é possivel a exclusão!!!");
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }

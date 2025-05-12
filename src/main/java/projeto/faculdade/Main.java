@@ -75,6 +75,10 @@ public class Main {
                 CrudAlunos.atualizarAluno(sc);
                 break;
             }
+            case 4 -> {
+                CrudAlunos.deletarAluno(sc);
+                break;
+            }
             case 0 -> {
                 menuInicial();
             }
