@@ -59,11 +59,12 @@ public class EmprestimoDAO {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
+                Date devolvidoEm = rs.getDate("devolvido_em");
                 Emprestimo emprestimo = new Emprestimo(rs.getInt("id_emprestimo"),
                         rs.getInt("id_aluno"), rs.getInt("id_livro"),
                         rs.getDate("data_emprestimo").toLocalDate(), 
                         rs.getDate("data_devolucao").toLocalDate(),
-                        rs.getDate("devolvido_em").toLocalDate());
+                        devolvidoEm != null ? devolvidoEm.toLocalDate() : null);
                 emprestimos.add(emprestimo);
             }
 

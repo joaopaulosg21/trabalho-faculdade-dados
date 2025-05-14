@@ -3,9 +3,8 @@ package projeto.faculdade;
 import java.util.Scanner;
 
 import projeto.faculdade.crud.CrudAlunos;
+import projeto.faculdade.crud.CrudEmprestimos;
 import projeto.faculdade.crud.CrudLivros;
-import projeto.faculdade.dao.AlunoDAO;
-import projeto.faculdade.dao.EmprestimoDAO;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -21,9 +20,7 @@ public class Main {
                 Escolha uma opção:
                 1 - Menu de alunos
                 2 - Menu de livros
-                3 - Emprestimo de livro
-                4 - Devolução de livro
-                5 - Relatorio
+                3 - Menu de emprestimos
                 """;
         System.out.println(menu);
         System.out.print("Opção: ");
@@ -39,14 +36,7 @@ public class Main {
                 break;
             }
             case 3 -> {
-                registrarEmprestimo(sc);
-            }
-            case 4 -> {
-                System.out.println("FALTA IMPLEMENTAR");
-            }
-            case 5 -> {
-                relatoriosBasicos();
-                break;
+                menuDeEmprestimos(sc);
             }
             case 0 -> {
 
@@ -128,18 +118,36 @@ public class Main {
         }
     }
 
-    private static void registrarEmprestimo(Scanner sc) {
-        System.out.print("Digite a matricula do aluno: ");
-        String matricula = sc.nextLine();
-        AlunoDAO.verificaMatricula(matricula);
+    
+    private static void menuDeEmprestimos(Scanner sc) {
+        System.out.println("""
+                    MENU DE LIVROS
+                Escolha uma opção:
+                1 - Registrar emprestimos
+                2 - Devolução
+                3 - Relatorios basicos
+                0 - Voltar
+                """);
+        System.out.print("Opção: ");
+        int option = sc.nextInt();
+        sc.nextLine();
 
-        System.out.print("Digite o titulo do livro: ");
-        String tituloLivro = sc.nextLine();
-
-        EmprestimoDAO.registrarEmprestimo(matricula, tituloLivro);
-    }
-
-    private static void relatoriosBasicos() {
-        EmprestimoDAO.relatoriosBasicos();
+        switch (option) {
+            case 1 -> {
+                CrudEmprestimos.registrarEmprestimo(sc);
+                break;
+            }
+            case 2 -> {
+                System.out.println("EM DESENVOLVIMENTO");
+                break;
+            }
+            case 3 -> {
+                CrudEmprestimos.relatoriosBasicos();
+                break;
+            }
+            case 0 -> {
+                menuInicial();
+            }
+        }
     }
 }
