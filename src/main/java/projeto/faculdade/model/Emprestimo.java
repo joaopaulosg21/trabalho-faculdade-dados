@@ -61,6 +61,19 @@ public class Emprestimo {
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Emprestimo{");
+        sb.append("id=").append(id);
+        sb.append(", id_aluno=").append(id_aluno);
+        sb.append(", id_livro=").append(id_livro);
+        sb.append(", dataEmprestimo=").append(dataEmprestimo);
+        sb.append(", dataDevolucao=").append(dataDevolucao);
+        sb.append('}');
+        return sb.toString();
+    }
     
     
 }

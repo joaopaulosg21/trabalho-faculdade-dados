@@ -41,6 +41,13 @@ public class Main {
             case 3 -> {
                 registrarEmprestimo(sc);
             }
+            case 4 -> {
+                System.out.println("FALTA IMPLEMENTAR");
+            }
+            case 5 -> {
+                relatoriosBasicos();
+                break;
+            }
             case 0 -> {
 
             }
@@ -132,4 +139,7 @@ public class Main {
         EmprestimoDAO.registrarEmprestimo(matricula, tituloLivro);
     }
 
+    private static void relatoriosBasicos() {
+        EmprestimoDAO.relatoriosBasicos();
+    }
 }
