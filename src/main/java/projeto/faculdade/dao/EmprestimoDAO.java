@@ -61,7 +61,9 @@ public class EmprestimoDAO {
             while (rs.next()) {
                 Emprestimo emprestimo = new Emprestimo(rs.getInt("id_emprestimo"),
                         rs.getInt("id_aluno"), rs.getInt("id_livro"),
-                        rs.getDate("data_emprestimo").toLocalDate(), rs.getDate("data_devolucao").toLocalDate());
+                        rs.getDate("data_emprestimo").toLocalDate(), 
+                        rs.getDate("data_devolucao").toLocalDate(),
+                        rs.getDate("devolvido_em").toLocalDate());
                 emprestimos.add(emprestimo);
             }
 

@@ -14,12 +14,15 @@ public class Emprestimo {
 
     private LocalDate dataDevolucao;
 
-    public Emprestimo(int id, int id_aluno, int id_livro, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
+    private LocalDate devolvidoEm;
+
+    public Emprestimo(int id, int id_aluno, int id_livro, LocalDate dataEmprestimo, LocalDate dataDevolucao, LocalDate devolvidoEm) {
         this.id = id;
         this.id_aluno = id_aluno;
         this.id_livro = id_livro;
         this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
+        this.devolvidoEm = devolvidoEm;
     }
 
     public int getId() {
@@ -62,6 +65,14 @@ public class Emprestimo {
         this.dataDevolucao = dataDevolucao;
     }
 
+    public LocalDate getDevolvidoEm() {
+        return devolvidoEm;
+    }
+
+    public void setDevolvidoEm(LocalDate devolvidoEm) {
+        this.devolvidoEm = devolvidoEm;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -71,9 +82,12 @@ public class Emprestimo {
         sb.append(", id_livro=").append(id_livro);
         sb.append(", dataEmprestimo=").append(dataEmprestimo);
         sb.append(", dataDevolucao=").append(dataDevolucao);
+        sb.append(", devolvidoEm=").append(devolvidoEm);
         sb.append('}');
         return sb.toString();
     }
+
+
     
     
 }
