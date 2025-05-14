@@ -37,6 +37,7 @@ public class Main {
             }
             case 3 -> {
                 menuDeEmprestimos(sc);
+                break;
             }
             case 0 -> {
 
@@ -121,7 +122,7 @@ public class Main {
     
     private static void menuDeEmprestimos(Scanner sc) {
         System.out.println("""
-                    MENU DE LIVROS
+                    MENU DE EMPRESIMOS
                 Escolha uma opção:
                 1 - Registrar emprestimos
                 2 - Devolução
@@ -138,7 +139,7 @@ public class Main {
                 break;
             }
             case 2 -> {
-                System.out.println("EM DESENVOLVIMENTO");
+                CrudEmprestimos.devolucao(sc);
                 break;
             }
             case 3 -> {

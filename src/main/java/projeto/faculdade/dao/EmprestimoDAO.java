@@ -62,7 +62,7 @@ public class EmprestimoDAO {
                 Date devolvidoEm = rs.getDate("devolvido_em");
                 Emprestimo emprestimo = new Emprestimo(rs.getInt("id_emprestimo"),
                         rs.getInt("id_aluno"), rs.getInt("id_livro"),
-                        rs.getDate("data_emprestimo").toLocalDate(), 
+                        rs.getDate("data_emprestimo").toLocalDate(),
                         rs.getDate("data_devolucao").toLocalDate(),
                         devolvidoEm != null ? devolvidoEm.toLocalDate() : null);
                 emprestimos.add(emprestimo);
@@ -74,5 +74,61 @@ public class EmprestimoDAO {
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());
         }
+    }
+
+    public static void devolucao(int idAluno, int idLivro) {
+        Emprestimo emprestimo = buscarEmprestimoPorId(idAluno, idLivro);
+        if(emprestimo == null) {
+            throw new ValidationException("Aluno não possui um emprestimos desse livro");
+        }
+        LocalDate devolvidoEm = emprestimo != null ? emprestimo.getDevolvidoEm() : null;
+
+        if (devolvidoEm != null) {
+            throw new ValidationException("Devolução já foi feita para esse determinado empréstimo");
+        }
+
+        String updateEmprestimo = "UPDATE emprestimos SET devolvido_em = ? WHERE id_aluno = ? AND id_livro = ?";
+        String atualizarEstoque = "UPDATE livros SET quantidade_estoque = quantidade_estoque + 1 WHERE id_livro = ?";
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(updateEmprestimo);
+            preparedStatement.setDate(1, Date.valueOf(LocalDate.now()));
+            preparedStatement.setInt(2, idAluno);
+            preparedStatement.setInt(3, idLivro);
+            preparedStatement.executeUpdate();
+
+            PreparedStatement atualizarEstoqueStmt = con.prepareStatement(atualizarEstoque);
+            atualizarEstoqueStmt.setInt(1, idLivro);
+            atualizarEstoqueStmt.executeUpdate();
+
+            System.out.println("Devolução concluida com sucesso!");
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+    }
+
+    public static Emprestimo buscarEmprestimoPorId(int idAluno, int idLivro) {
+        String selectEmprestimo = "SELECT * FROM emprestimos WHERE id_aluno = ? AND id_livro = ?";
+
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(selectEmprestimo);
+            preparedStatement.setInt(1, idAluno);
+            preparedStatement.setInt(2, idLivro);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id_aluno = rs.getInt("id_aluno");
+                Date devolvidoEm = rs.getDate("devolvido_em");
+                Emprestimo emprestimo = new Emprestimo(rs.getInt("id_emprestimo"),
+                        id_aluno, rs.getInt("id_livro"),
+                        rs.getDate("data_emprestimo").toLocalDate(),
+                        rs.getDate("data_devolucao").toLocalDate(),
+                        devolvidoEm != null ? devolvidoEm.toLocalDate() : null);
+                return emprestimo;
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+
+        return null;
     }
 }
