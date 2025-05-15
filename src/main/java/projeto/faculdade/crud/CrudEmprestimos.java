@@ -5,6 +5,7 @@ import java.util.Scanner;
 import projeto.faculdade.dao.AlunoDAO;
 import projeto.faculdade.dao.EmprestimoDAO;
 import projeto.faculdade.dao.LivroDAO;
+import projeto.faculdade.model.Aluno;
 
 public class CrudEmprestimos {
 
@@ -30,9 +31,10 @@ public class CrudEmprestimos {
         System.out.print("Digite o titulo do livro: ");
         String tituloLivro = sc.nextLine();
 
-        int idAluno = AlunoDAO.getAlunoId(matricula);
+        Aluno aluno = AlunoDAO.getAlunoId(matricula);
+        int idAluno = aluno.getId();
         int idLivro = LivroDAO.getLivroId(tituloLivro);
 
-        EmprestimoDAO.devolucao(idAluno, idLivro);
+        EmprestimoDAO.devolucao(aluno, idLivro);
     }
 }

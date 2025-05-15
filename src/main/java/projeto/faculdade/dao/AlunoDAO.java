@@ -45,22 +45,24 @@ public class AlunoDAO {
         }
     }
 
-    public static int getAlunoId(String matricula) {
-        String idAlunoQuery = "SELECT id_aluno FROM alunos WHERE matricula = ?";
+    public static Aluno getAlunoId(String matricula) {
+        String idAlunoQuery = "SELECT * FROM alunos WHERE matricula = ?";
         verificaMatricula(matricula);
-        int idAluno = -1;
         try (Connection con = DbConnection.getConnection()) {
             PreparedStatement idAlunoStmt = con.prepareStatement(idAlunoQuery);
             idAlunoStmt.setString(1, matricula);
 
             ResultSet rs = idAlunoStmt.executeQuery();
             while (rs.next()) {
-                idAluno = rs.getInt("id_aluno");
+                int idAluno = rs.getInt("id_aluno");
+                Aluno aluno = new Aluno(idAluno, rs.getString("nome_aluno"),
+                        rs.getString("matricula"), rs.getDate("data_nascimento").toLocalDate());
+                return aluno;
             }
         } catch (SQLException exc) {
             throw new ValidationException(exc.getMessage());
         }
-        return idAluno;
+        return null;
     }
 
     public static Aluno buscar(String matricula) {
@@ -92,7 +94,7 @@ public class AlunoDAO {
             PreparedStatement preparedStatement = con.prepareStatement(atualizarAluno);
             preparedStatement.setString(1, aluno.getNome());
             preparedStatement.setDate(2, Date.valueOf(aluno.getDataNascimento()));
-            preparedStatement.setInt(3,aluno.getId());
+            preparedStatement.setInt(3, aluno.getId());
             preparedStatement.executeUpdate();
 
             System.out.println("Aluno atualizado com sucesso!!");

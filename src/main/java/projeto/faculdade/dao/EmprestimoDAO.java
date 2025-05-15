@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import projeto.faculdade.exceptions.ValidationException;
+import projeto.faculdade.model.Aluno;
 import projeto.faculdade.model.Emprestimo;
 import projeto.faculdade.util.DbConnection;
 
@@ -19,8 +20,8 @@ public class EmprestimoDAO {
         String verificarEstoque = "SELECT quantidade_estoque FROM livros WHERE titulo = ?";
         String registrarEmprestimo = "INSERT INTO emprestimos(id_aluno, id_livro, data_devolucao) VALUES (?,?,?)";
         String atualizarEstoque = "UPDATE livros SET quantidade_estoque = quantidade_estoque - 1 WHERE id_livro = ?";
-
-        int idAluno = AlunoDAO.getAlunoId(matricula);
+        Aluno aluno = AlunoDAO.getAlunoId(matricula);
+        int idAluno = aluno.getId();
         int idLivro = LivroDAO.getLivroId(tituloLivro);
         try (Connection con = DbConnection.getConnection()) {
             PreparedStatement estoqueStmt = con.prepareStatement(verificarEstoque);
@@ -76,8 +77,8 @@ public class EmprestimoDAO {
         }
     }
 
-    public static void devolucao(int idAluno, int idLivro) {
-        Emprestimo emprestimo = buscarEmprestimoPorId(idAluno, idLivro);
+    public static void devolucao(Aluno aluno, int idLivro) {
+        Emprestimo emprestimo = buscarEmprestimoPorId(aluno.getId(), idLivro);
         if(emprestimo == null) {
             throw new ValidationException("Aluno não possui emprestimos desse livro");
         }
@@ -91,7 +92,7 @@ public class EmprestimoDAO {
         try (Connection con = DbConnection.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(updateEmprestimo);
             preparedStatement.setDate(1, Date.valueOf(LocalDate.now()));
-            preparedStatement.setInt(2, idAluno);
+            preparedStatement.setInt(2, aluno.getId());
             preparedStatement.setInt(3, idLivro);
             preparedStatement.executeUpdate();
 
@@ -106,7 +107,7 @@ public class EmprestimoDAO {
     }
 
     public static Emprestimo buscarEmprestimoPorId(int idAluno, int idLivro) {
-        String selectEmprestimo = "SELECT * FROM emprestimos WHERE id_aluno = ? AND id_livro = ?";
+        String selectEmprestimo = "SELECT * FROM emprestimos WHERE id_aluno = ? AND id_livro = ? ORDER BY id_emprestimo DESC";
 
         try (Connection con = DbConnection.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(selectEmprestimo);
