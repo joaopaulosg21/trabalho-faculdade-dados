@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,22 @@ public class EmprestimoDAO {
             }
 
             emprestimos.forEach(emp -> {
-                System.out.println(emp);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String matriculaAluno = AlunoDAO.getMatricula(emp.getId_aluno());
+                int empId = emp.getId();
+                String nomeLivro = LivroDAO.getTituloLivro(emp.getId_livro());
+                String dataEmprestimo = emp.getDataEmprestimo().format(formatter);
+                String dataDevolucao = emp.getDataDevolucao().format(formatter);
+                String devolvidoEm = emp.getDevolvidoEm() != null ? emp.getDevolvidoEm().format(formatter) : "Não devolvido";
+            
+                System.out.println("""
+                        Emprestimos id: %d,
+                        Matricula do aluno: %s
+                        Nome livro: %s,
+                        Data do emprestimo: %s,
+                        Data prevista de devolução %s,
+                        Data em que foi devolvido: %s
+                        """.formatted(empId,matriculaAluno,nomeLivro,dataEmprestimo,dataDevolucao,devolvidoEm));
             });
         } catch (SQLException exc) {
             System.out.println(exc.getMessage());

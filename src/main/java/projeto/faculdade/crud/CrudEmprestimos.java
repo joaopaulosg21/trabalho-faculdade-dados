@@ -32,7 +32,6 @@ public class CrudEmprestimos {
         String tituloLivro = sc.nextLine();
 
         Aluno aluno = AlunoDAO.getAlunoId(matricula);
-        int idAluno = aluno.getId();
         int idLivro = LivroDAO.getLivroId(tituloLivro);
 
         EmprestimoDAO.devolucao(aluno, idLivro);

@@ -65,6 +65,24 @@ public class AlunoDAO {
         return null;
     }
 
+        public static String getMatricula(int idAluno) {
+        String idAlunoQuery = "SELECT matricula FROM alunos WHERE id_aluno = ?";
+        String matricula = "";
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement idAlunoStmt = con.prepareStatement(idAlunoQuery);
+            idAlunoStmt.setInt(1, idAluno);
+
+            ResultSet rs = idAlunoStmt.executeQuery();
+            while (rs.next()) {
+                matricula = rs.getString("matricula");
+                return matricula;
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+        return null;
+    }
+
     public static Aluno buscar(String matricula) {
         String queryBuscarAluno = "SELECT * FROM alunos WHERE matricula = ?";
         verificaMatricula(matricula);

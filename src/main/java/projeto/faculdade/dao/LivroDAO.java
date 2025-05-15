@@ -62,6 +62,23 @@ public class LivroDAO {
         return idLivro;
     }
 
+    public static String getTituloLivro(int idLivro) {
+        String idLivroQuery = "SELECT titulo FROM livros WHERE id_livro = ?";
+        String tituloLivro = "";
+        try (Connection con = DbConnection.getConnection()) {
+            PreparedStatement idLivroStmt = con.prepareStatement(idLivroQuery);
+            idLivroStmt.setInt(1, idLivro);
+
+            ResultSet rs = idLivroStmt.executeQuery();
+            while (rs.next()) {
+                tituloLivro = rs.getString("titulo");
+            }
+        } catch (SQLException exc) {
+            throw new ValidationException(exc.getMessage());
+        }
+        return tituloLivro;
+    }
+
     public static Livro buscar(String titulo) {
         String queryBuscarLivro = "SELECT * FROM livros WHERE titulo = ?";
         verificaTitulo(titulo);
