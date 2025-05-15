@@ -79,11 +79,10 @@ public class EmprestimoDAO {
     public static void devolucao(int idAluno, int idLivro) {
         Emprestimo emprestimo = buscarEmprestimoPorId(idAluno, idLivro);
         if(emprestimo == null) {
-            throw new ValidationException("Aluno não possui um emprestimos desse livro");
+            throw new ValidationException("Aluno não possui emprestimos desse livro");
         }
-        LocalDate devolvidoEm = emprestimo != null ? emprestimo.getDevolvidoEm() : null;
 
-        if (devolvidoEm != null) {
+        if (emprestimo.getDevolvidoEm() != null) {
             throw new ValidationException("Devolução já foi feita para esse determinado empréstimo");
         }
 
