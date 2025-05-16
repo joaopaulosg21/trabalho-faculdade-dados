@@ -122,7 +122,7 @@ public class Main {
     
     private static void menuDeEmprestimos(Scanner sc) {
         System.out.println("""
-                    MENU DE EMPRESIMOS
+                    MENU DE EMPRESTIMOS
                 Escolha uma opção:
                 1 - Registrar emprestimos
                 2 - Devolução

@@ -84,7 +84,7 @@ public class EmprestimoDAO {
                         Matricula do aluno: %s
                         Nome livro: %s,
                         Data do emprestimo: %s,
-                        Data prevista de devolução %s,
+                        Data prevista de devolução: %s,
                         Data em que foi devolvido: %s
                         """.formatted(empId,matriculaAluno,nomeLivro,dataEmprestimo,dataDevolucao,devolvidoEm));
             });
