@@ -82,7 +82,7 @@ public class EmprestimoDAO {
                 System.out.println("""
                         Emprestimos id: %d,
                         Matricula do aluno: %s
-                        Nome livro: %s,
+                        Titulo livro: %s,
                         Data do emprestimo: %s,
                         Data prevista de devolução: %s,
                         Data em que foi devolvido: %s

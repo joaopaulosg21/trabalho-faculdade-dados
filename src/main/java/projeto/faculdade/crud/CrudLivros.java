@@ -52,14 +52,15 @@ public class CrudLivros {
         }
 
         System.out.print("Digite o ano de publicação do livro: ");
-        int anoPublicacao = sc.nextInt();
-
+        String ano = sc.nextLine();
+        int anoPublicacao = (ano.equalsIgnoreCase("") ? 0 : Integer.parseInt(ano));
         if (anoPublicacao == 0) {
             anoPublicacao = livro.getAnoPublicacao();
         }
 
         System.out.print("Digite a quantidade de estoque: ");
-        int quantidade = sc.nextInt();
+        String qtd = sc.nextLine();
+        int quantidade = (qtd.equalsIgnoreCase("") ? 0 : Integer.parseInt(qtd));
 
         if (quantidade == 0) {
             quantidade = livro.getQuantidadeEstoque();
